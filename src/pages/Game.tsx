@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { HexColorPicker } from 'react-colorful';
 import { getRandomColor, calculateColorDifference, calculateScore } from '../utils/colorUtils';
-import RoundSummaryModal from '../components/RoundSummaryModal';
 
 interface RoundResult {
   targetColor: string;
@@ -29,8 +28,6 @@ const Game = () => {
   const [results, setResults] = useState<RoundResult[]>([]);
   const [countdown, setCountdown] = useState<number>(3);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
-  const [showRoundSummary, setShowRoundSummary] = useState<boolean>(false);
-  const [currentRoundResult, setCurrentRoundResult] = useState<RoundResult | null>(null);
 
   // Get player name from localStorage
   useEffect(() => {
@@ -110,7 +107,6 @@ const Game = () => {
     
     const difference = calculateColorDifference(targetColor, selectedColor);
     const roundScore = calculateScore(difference);
-    const similarity = 100 - difference;
     
     const roundResult = {
       targetColor,
@@ -121,18 +117,12 @@ const Game = () => {
     };
     
     setResults((prev) => [...prev, roundResult]);
-    setCurrentRoundResult(roundResult);
-    setShowRoundSummary(true);
-  }, [targetColor, selectedColor, timeRemaining]);
-
-  // Continue to next round after summary
-  const handleContinueToNextRound = () => {
-    setShowRoundSummary(false);
-    // Wait a bit before starting the next round
+    
+    // Automatically proceed to next round after a short delay
     setTimeout(() => {
       setCurrentRound((prev) => prev + 1);
-    }, 300);
-  };
+    }, 500);
+  }, [targetColor, selectedColor, timeRemaining]);
 
   if (!gameStarted) {
     return (
@@ -189,7 +179,7 @@ const Game = () => {
                 </>
               )}
               
-              {!isRoundActive && !showRoundSummary && (
+              {!isRoundActive && (
                 <div className="flex-grow flex items-center justify-center">
                   <p className="text-xl text-center animate-pulse">
                     Preparando siguiente ronda...
@@ -199,18 +189,6 @@ const Game = () => {
             </div>
           </div>
         </div>
-
-        {currentRoundResult && (
-          <RoundSummaryModal
-            isOpen={showRoundSummary}
-            roundNumber={currentRound}
-            targetColor={currentRoundResult.targetColor}
-            selectedColor={currentRoundResult.selectedColor}
-            score={currentRoundResult.score}
-            similarity={100 - currentRoundResult.difference}
-            onContinue={handleContinueToNextRound}
-          />
-        )}
       </div>
     </Layout>
   );
