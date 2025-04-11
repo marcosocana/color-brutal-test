@@ -75,10 +75,16 @@ const Game = () => {
       const roundColor = allTargetColors[roundIndex];
       setTargetColor(roundColor);
       
+      // Comenzar cada ronda con un color aleatorio en lugar de blanco
+      if (!results.length) {
+        // Si es la primera ronda, establecer un color aleatorio inicial
+        setSelectedColor(getRandomColor());
+      }
+      
       // Reset time and activate round
       setTimeRemaining(SECONDS_PER_ROUND);
       setIsRoundActive(true);
-      setShowColorPicker(false);
+      setShowColorPicker(true); // Mostrar el selector de color automáticamente
     } else {
       // Ensure all results are saved before navigating
       localStorage.setItem('gameResults', JSON.stringify(results));
@@ -125,7 +131,7 @@ const Game = () => {
     setResults(prevResults => {
       const updatedResults = [...prevResults, roundResult];
       
-      // Immediately save to localStorage after each round
+      // Inmediatamente guardar en localStorage después de cada ronda
       localStorage.setItem('gameResults', JSON.stringify(updatedResults));
       
       return updatedResults;
