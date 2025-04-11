@@ -83,7 +83,7 @@ const Game = () => {
       setTimeRemaining(SECONDS_PER_ROUND);
       setIsRoundActive(true);
     } else {
-      // Make sure results are saved completely before navigating
+      // Ensure all results are saved before navigating
       localStorage.setItem('gameResults', JSON.stringify(results));
       navigate('/results');
     }
@@ -124,19 +124,22 @@ const Game = () => {
       timeRemaining,
     };
     
-    // Add the new result to our results array
-    setResults((prev) => [...prev, roundResult]);
-    
-    // Force immediate localStorage update for safety
-    setTimeout(() => {
-      const updatedResults = [...results, roundResult];
+    // Update results state with the new round result
+    setResults(prevResults => {
+      const updatedResults = [...prevResults, roundResult];
+      
+      // Immediately save to localStorage after each round
       localStorage.setItem('gameResults', JSON.stringify(updatedResults));
       
-      // Proceed to next round
-      setCurrentRound((prev) => prev + 1);
+      return updatedResults;
+    });
+    
+    // Proceed to next round after a short delay
+    setTimeout(() => {
+      setCurrentRound(prev => prev + 1);
       setShowColorPicker(false);
     }, 500);
-  }, [targetColor, selectedColor, timeRemaining, results]);
+  }, [targetColor, selectedColor, timeRemaining]);
 
   const toggleColorPicker = () => {
     if (isRoundActive) {
