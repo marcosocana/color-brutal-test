@@ -51,7 +51,7 @@ const Results = () => {
   };
 
   const handleShare = () => {
-    const shareText = `🎨 Color Brutal: ${playerName} consiguió ${totalScore} puntos de ${results.length * 100}. "${feedback}" 🎨 ¡Intenta superarlo!`;
+    const shareText = `🎨 Colorete: ${playerName} consiguió ${totalScore} puntos de ${results.length * 100}. "${feedback}" 🎨 ¡Intenta superarlo!`;
     
     navigator.clipboard.writeText(shareText)
       .then(() => toast.success('¡Resultado copiado al portapapeles!'))
@@ -60,10 +60,10 @@ const Results = () => {
 
   return (
     <Layout>
-      <div className="brutalist-container my-6 flex-grow">
+      <div className="brutalist-container my-6 flex-grow max-w-6xl mx-auto w-full">
         <h1 className="brutalist-title text-center mb-12">RESULTADOS</h1>
         
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="mb-8 text-center">
             <p className="text-2xl mb-2 font-display uppercase">{playerName}</p>
             <p className="text-4xl md:text-6xl font-display mb-6">{totalScore}/{results.length * 100}</p>

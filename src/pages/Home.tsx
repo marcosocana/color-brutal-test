@@ -27,7 +27,7 @@ const Home = () => {
           ¿PUEDES REPLICAR EL COLOR EXACTO?
         </h1>
         
-        <div className="max-w-lg w-full space-y-8 pt-10">
+        <div className="max-w-xl w-full space-y-8 pt-10">
           <div className="space-y-4">
             <label htmlFor="playerName" className="text-lg uppercase">
               INTRODUCE TU NOMBRE:

@@ -27,6 +27,8 @@ const Game = () => {
   const [timeRemaining, setTimeRemaining] = useState<number>(SECONDS_PER_ROUND);
   const [isRoundActive, setIsRoundActive] = useState<boolean>(true);
   const [results, setResults] = useState<RoundResult[]>([]);
+  const [countdown, setCountdown] = useState<number>(3);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
 
   // Get player name from localStorage
   useEffect(() => {
@@ -38,8 +40,26 @@ const Game = () => {
     setPlayerName(storedName);
   }, [navigate]);
 
+  // Initial countdown before starting the game
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0) {
+      // Show "Go!" for 1 second
+      const timer = setTimeout(() => {
+        setGameStarted(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
   // Generate a new target color at the start of each round
   useEffect(() => {
+    if (!gameStarted) return;
+    
     if (currentRound <= TOTAL_ROUNDS) {
       const newColor = getRandomColor();
       setTargetColor(newColor);
@@ -52,11 +72,11 @@ const Game = () => {
       localStorage.setItem('gameResults', JSON.stringify(totalResults));
       navigate('/results');
     }
-  }, [currentRound, navigate, results]);
+  }, [currentRound, gameStarted, navigate, results]);
 
   // Timer countdown
   useEffect(() => {
-    if (!isRoundActive) return;
+    if (!gameStarted || !isRoundActive) return;
 
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
@@ -70,7 +90,7 @@ const Game = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isRoundActive]);
+  }, [isRoundActive, gameStarted]);
 
   // End current round
   const endRound = useCallback(() => {
@@ -107,13 +127,28 @@ const Game = () => {
     }
   };
 
+  if (!gameStarted) {
+    return (
+      <Layout>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <div className="brutalist-container w-full max-w-4xl mx-auto my-6 flex flex-col items-center justify-center py-32">
+            <h1 className="brutalist-title mb-8 text-7xl">
+              {countdown > 0 ? countdown : '¡GO!'}
+            </h1>
+            <p className="text-xl">Prepárate para empezar...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="flex flex-col min-h-screen">
-        <div className="brutalist-container my-6 flex-grow flex flex-col">
+        <div className="brutalist-container my-6 flex-grow flex flex-col max-w-6xl mx-auto w-full">
           <div className="flex justify-between items-center mb-8">
             <h2 className="font-display text-xl">RONDA {currentRound}/{TOTAL_ROUNDS}</h2>
-            <div className="text-xl font-mono">
+            <div className="text-xl font-mono px-4 py-2 border border-white rounded flex items-center justify-center min-w-16">
               {timeRemaining}s
             </div>
           </div>
