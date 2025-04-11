@@ -6,6 +6,7 @@ import { Button } from '../components/ui/button';
 import { HexColorPicker } from 'react-colorful';
 import { getRandomColor, calculateColorDifference, calculateScore } from '../utils/colorUtils';
 import { toast } from 'sonner';
+import RoundSummaryModal from '../components/RoundSummaryModal';
 
 interface RoundResult {
   targetColor: string;
@@ -29,6 +30,8 @@ const Game = () => {
   const [results, setResults] = useState<RoundResult[]>([]);
   const [countdown, setCountdown] = useState<number>(3);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [showRoundSummary, setShowRoundSummary] = useState<boolean>(false);
+  const [currentRoundResult, setCurrentRoundResult] = useState<RoundResult | null>(null);
 
   // Get player name from localStorage
   useEffect(() => {
@@ -68,8 +71,7 @@ const Game = () => {
       setIsRoundActive(true);
     } else {
       // Game over, navigate to results
-      const totalResults = [...results];
-      localStorage.setItem('gameResults', JSON.stringify(totalResults));
+      localStorage.setItem('gameResults', JSON.stringify(results));
       navigate('/results');
     }
   }, [currentRound, gameStarted, navigate, results]);
@@ -98,33 +100,28 @@ const Game = () => {
     
     const difference = calculateColorDifference(targetColor, selectedColor);
     const roundScore = calculateScore(difference);
+    const similarity = 100 - difference;
     
-    setResults((prev) => [
-      ...prev,
-      {
-        targetColor,
-        selectedColor,
-        difference,
-        score: roundScore,
-        timeRemaining,
-      },
-    ]);
+    const roundResult = {
+      targetColor,
+      selectedColor,
+      difference,
+      score: roundScore,
+      timeRemaining,
+    };
     
-    toast(`Ronda ${currentRound}: ${roundScore} puntos`, {
-      description: difference === 0 ? "¡Color exacto!" : `Diferencia: ${difference}%`,
-    });
-    
-    // Wait 2 seconds before next round
+    setResults((prev) => [...prev, roundResult]);
+    setCurrentRoundResult(roundResult);
+    setShowRoundSummary(true);
+  }, [targetColor, selectedColor, timeRemaining]);
+
+  // Continue to next round after summary
+  const handleContinueToNextRound = () => {
+    setShowRoundSummary(false);
+    // Wait a bit before starting the next round
     setTimeout(() => {
       setCurrentRound((prev) => prev + 1);
-    }, 2000);
-  }, [targetColor, selectedColor, currentRound, timeRemaining]);
-
-  // Submit button handler
-  const handleSubmit = () => {
-    if (isRoundActive) {
-      endRound();
-    }
+    }, 300);
   };
 
   if (!gameStarted) {
@@ -179,17 +176,10 @@ const Game = () => {
                   />
                   
                   <div className="font-mono text-center mb-4">{selectedColor}</div>
-                  
-                  <Button
-                    onClick={handleSubmit}
-                    className="brutalist-button w-full"
-                  >
-                    ENVIAR
-                  </Button>
                 </>
               )}
               
-              {!isRoundActive && (
+              {!isRoundActive && !showRoundSummary && (
                 <div className="flex-grow flex items-center justify-center">
                   <p className="text-xl text-center animate-pulse">
                     Preparando siguiente ronda...
@@ -199,6 +189,18 @@ const Game = () => {
             </div>
           </div>
         </div>
+
+        {currentRoundResult && (
+          <RoundSummaryModal
+            isOpen={showRoundSummary}
+            roundNumber={currentRound}
+            targetColor={currentRoundResult.targetColor}
+            selectedColor={currentRoundResult.selectedColor}
+            score={currentRoundResult.score}
+            similarity={100 - currentRoundResult.difference}
+            onContinue={handleContinueToNextRound}
+          />
+        )}
       </div>
     </Layout>
   );
