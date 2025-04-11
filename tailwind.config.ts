@@ -23,7 +23,7 @@ export default {
         border: "#333333",
         input: "#333333",
         ring: "#ffffff",
-        background: "#0a0a0a",
+        background: "#1f1f1f", // Darker gray background
         foreground: "#ffffff",
         primary: {
           DEFAULT: "#ffffff",
@@ -94,3 +94,4 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+

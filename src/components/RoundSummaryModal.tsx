@@ -39,7 +39,7 @@ const RoundSummaryModal = ({
           <div className="flex flex-col items-center gap-2">
             <div className="text-sm mb-1">OBJETIVO</div>
             <div 
-              className="w-full h-16 rounded-sm" 
+              className="w-full h-16 rounded-sm border border-white/30" 
               style={{ backgroundColor: targetColor }}
             ></div>
             <div className="text-xs font-mono">{targetColor}</div>
@@ -48,7 +48,7 @@ const RoundSummaryModal = ({
           <div className="flex flex-col items-center gap-2">
             <div className="text-sm mb-1">TU COLOR</div>
             <div 
-              className="w-full h-16 rounded-sm" 
+              className="w-full h-16 rounded-sm border border-white/30" 
               style={{ backgroundColor: selectedColor }}
             ></div>
             <div className="text-xs font-mono">{selectedColor}</div>
@@ -76,3 +76,4 @@ const RoundSummaryModal = ({
 };
 
 export default RoundSummaryModal;
+

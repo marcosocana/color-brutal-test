@@ -8,7 +8,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="min-h-screen flex flex-col bg-background text-foreground brutalist-grid">
       <header className="border-b border-white py-4 px-6 flex justify-between items-center">
         <Link to="/" className="font-display text-xl tracking-tighter uppercase">Colorete</Link>
         <nav className="flex gap-8">
@@ -25,3 +25,4 @@ const Layout = ({ children }: LayoutProps) => {
 };
 
 export default Layout;
+
