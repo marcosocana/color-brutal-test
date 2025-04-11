@@ -6,6 +6,7 @@ import { Button } from '../components/ui/button';
 import { generateFeedback } from '../utils/colorUtils';
 import { toast } from 'sonner';
 import { Share2 } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface RoundResult {
   targetColor: string;
@@ -59,7 +60,7 @@ const Results = () => {
   };
 
   return (
-    <Layout>
+    <Layout fullHeight={false}>
       <div className="brutalist-container my-6 flex-grow max-w-6xl mx-auto w-full">
         <h1 className="brutalist-title text-center mb-12">RESULTADOS</h1>
         
@@ -70,30 +71,32 @@ const Results = () => {
             <p className="text-xl font-mono">{feedback}</p>
           </div>
           
-          <div className="grid grid-cols-1 gap-6 mb-12">
-            {results.map((round, index) => (
-              <div key={index} className="border border-white p-4">
-                <div className="flex justify-between items-center mb-4">
-                  <p className="font-display">RONDA {index + 1}</p>
-                  <p className="font-display">{round.score} PUNTOS</p>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm mb-2">OBJETIVO</p>
-                    <div className="h-12 w-full" style={{ backgroundColor: round.targetColor }}></div>
-                    <p className="text-xs mt-1 font-mono">{round.targetColor}</p>
+          <ScrollArea className="h-[60vh] mb-8">
+            <div className="grid grid-cols-1 gap-6 pr-4">
+              {results.map((round, index) => (
+                <div key={index} className="border border-white p-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <p className="font-display">RONDA {index + 1}</p>
+                    <p className="font-display">{round.score} PUNTOS</p>
                   </div>
                   
-                  <div>
-                    <p className="text-sm mb-2">TU COLOR</p>
-                    <div className="h-12 w-full" style={{ backgroundColor: round.selectedColor }}></div>
-                    <p className="text-xs mt-1 font-mono">{round.selectedColor}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm mb-2">OBJETIVO</p>
+                      <div className="h-12 w-full border border-white/30" style={{ backgroundColor: round.targetColor }}></div>
+                      <p className="text-xs mt-1 font-mono">{round.targetColor}</p>
+                    </div>
+                    
+                    <div>
+                      <p className="text-sm mb-2">TU COLOR</p>
+                      <div className="h-12 w-full border border-white/30" style={{ backgroundColor: round.selectedColor }}></div>
+                      <p className="text-xs mt-1 font-mono">{round.selectedColor}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </ScrollArea>
           
           <div className="flex flex-col md:flex-row gap-4">
             <Button 

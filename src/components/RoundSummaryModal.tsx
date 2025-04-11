@@ -30,7 +30,7 @@ const RoundSummaryModal = ({
 }: RoundSummaryModalProps) => {
   return (
     <Dialog open={isOpen}>
-      <DialogContent className="sm:max-w-md border-white bg-background">
+      <DialogContent className="sm:max-w-md border-white bg-background" hideCloseButton>
         <DialogHeader>
           <DialogTitle className="text-center text-xl font-display">RONDA {roundNumber} COMPLETADA</DialogTitle>
         </DialogHeader>
@@ -76,4 +76,3 @@ const RoundSummaryModal = ({
 };
 
 export default RoundSummaryModal;
-

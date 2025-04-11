@@ -21,13 +21,13 @@ const Home = () => {
   };
 
   return (
-    <Layout>
-      <div className="flex flex-col items-center justify-center flex-grow px-4 py-12">
+    <Layout fullHeight>
+      <div className="flex flex-col items-center justify-center flex-grow px-4">
         <h1 className="brutalist-title mb-8 text-center">
           ¿PUEDES REPLICAR EL COLOR EXACTO?
         </h1>
         
-        <div className="max-w-xl w-full space-y-8 pt-10">
+        <div className="max-w-xl w-full space-y-8">
           <div className="space-y-4">
             <label htmlFor="playerName" className="text-lg uppercase">
               INTRODUCE TU NOMBRE:
@@ -59,7 +59,7 @@ const Home = () => {
             INICIAR JUEGO
           </Button>
           
-          <p className="text-sm text-muted-foreground pt-6 text-center max-w-md mx-auto">
+          <p className="text-sm text-muted-foreground text-center max-w-md mx-auto">
             5 RONDAS. 10 SEGUNDOS POR COLOR. ¿TIENES BUEN OJO O SOLO CREES QUE LO TIENES?
           </p>
         </div>

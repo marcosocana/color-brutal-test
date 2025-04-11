@@ -2,10 +2,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { Button } from '../components/ui/button';
 import { HexColorPicker } from 'react-colorful';
 import { getRandomColor, calculateColorDifference, calculateScore } from '../utils/colorUtils';
-import { toast } from 'sonner';
 import RoundSummaryModal from '../components/RoundSummaryModal';
 
 interface RoundResult {
@@ -126,9 +124,9 @@ const Game = () => {
 
   if (!gameStarted) {
     return (
-      <Layout>
-        <div className="flex flex-col items-center justify-center min-h-screen">
-          <div className="brutalist-container w-full max-w-4xl mx-auto my-6 flex flex-col items-center justify-center py-32">
+      <Layout fullHeight>
+        <div className="flex flex-col items-center justify-center flex-grow">
+          <div className="brutalist-container w-full max-w-4xl mx-auto flex flex-col items-center justify-center py-32">
             <h1 className="brutalist-title mb-8 text-7xl">
               {countdown > 0 ? countdown : '¡GO!'}
             </h1>
@@ -140,8 +138,8 @@ const Game = () => {
   }
 
   return (
-    <Layout>
-      <div className="flex flex-col min-h-screen">
+    <Layout fullHeight>
+      <div className="flex flex-col h-full">
         <div className="brutalist-container my-6 flex-grow flex flex-col max-w-6xl mx-auto w-full">
           <div className="flex justify-between items-center mb-8">
             <h2 className="font-display text-xl">RONDA {currentRound}/{TOTAL_ROUNDS}</h2>
