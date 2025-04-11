@@ -57,6 +57,7 @@ export default {
       fontFamily: {
         sans: ["DM Mono", "monospace"],
         display: ["Archivo Black", "sans-serif"],
+        mono: ["Space Mono", "IBM Plex Mono", "monospace"],
       },
       borderRadius: {
         lg: "0",
@@ -94,4 +95,3 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
-

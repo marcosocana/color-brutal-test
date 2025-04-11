@@ -6,7 +6,6 @@ import { Button } from '../components/ui/button';
 import { generateFeedback } from '../utils/colorUtils';
 import { toast } from 'sonner';
 import { Share2 } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface RoundResult {
   targetColor: string;
@@ -61,7 +60,7 @@ const Results = () => {
 
   return (
     <Layout fullHeight={false}>
-      <div className="brutalist-container my-6 flex-grow max-w-6xl mx-auto w-full">
+      <div className="brutalist-container my-6 w-full">
         <h1 className="brutalist-title text-center mb-12">RESULTADOS</h1>
         
         <div className="max-w-4xl mx-auto">
@@ -71,8 +70,8 @@ const Results = () => {
             <p className="text-xl font-mono">{feedback}</p>
           </div>
           
-          <ScrollArea className="h-[60vh] mb-8">
-            <div className="grid grid-cols-1 gap-6 pr-4">
+          <div className="mb-8">
+            <div className="grid grid-cols-1 gap-6">
               {results.map((round, index) => (
                 <div key={index} className="border border-white p-4">
                   <div className="flex justify-between items-center mb-4">
@@ -96,9 +95,9 @@ const Results = () => {
                 </div>
               ))}
             </div>
-          </ScrollArea>
+          </div>
           
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-4 mb-8">
             <Button 
               onClick={handleShare} 
               className="brutalist-button flex items-center justify-center gap-2 flex-grow"

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -73,7 +72,10 @@ const Game = () => {
       const roundIndex = currentRound - 1;
       const roundColor = allTargetColors[roundIndex];
       setTargetColor(roundColor);
-      setSelectedColor('#FFFFFF'); // Reset to white
+      // Don't reset to white, keep the selected color from previous round
+      if (currentRound === 1) {
+        setSelectedColor('#FFFFFF');
+      }
       setTimeRemaining(SECONDS_PER_ROUND);
       setIsRoundActive(true);
     } else {
@@ -154,7 +156,7 @@ const Game = () => {
             <div className="flex flex-col">
               <h3 className="font-display text-lg mb-4">COLOR OBJETIVO</h3>
               <div 
-                className="color-swatch flex-grow"
+                className="color-swatch h-32 md:h-48"
                 style={{ backgroundColor: targetColor }}
               ></div>
               <div className="mt-4 font-mono text-center uppercase">{targetColor}</div>
@@ -163,7 +165,7 @@ const Game = () => {
             <div className="flex flex-col">
               <h3 className="font-display text-lg mb-4">TU SELECCIÓN</h3>
               <div 
-                className="color-swatch mb-4 flex-grow"
+                className="color-swatch mb-4 h-32 md:h-48"
                 style={{ backgroundColor: selectedColor }}
               ></div>
               
