@@ -52,6 +52,8 @@ const Results = () => {
   }, [navigate]);
 
   const handlePlayAgain = () => {
+    // Clear previous results
+    localStorage.removeItem('gameResults');
     navigate('/');
   };
 

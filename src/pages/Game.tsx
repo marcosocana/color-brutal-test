@@ -75,13 +75,10 @@ const Game = () => {
       const roundColor = allTargetColors[roundIndex];
       setTargetColor(roundColor);
       
-      // Initialize with white color only for the first round
-      if (currentRound === 1) {
-        setSelectedColor('#FFFFFF');
-      }
-      
+      // Reset time and activate round
       setTimeRemaining(SECONDS_PER_ROUND);
       setIsRoundActive(true);
+      setShowColorPicker(false);
     } else {
       // Ensure all results are saved before navigating
       localStorage.setItem('gameResults', JSON.stringify(results));
@@ -137,7 +134,6 @@ const Game = () => {
     // Proceed to next round after a short delay
     setTimeout(() => {
       setCurrentRound(prev => prev + 1);
-      setShowColorPicker(false);
     }, 500);
   }, [targetColor, selectedColor, timeRemaining]);
 
