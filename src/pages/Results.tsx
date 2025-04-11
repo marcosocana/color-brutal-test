@@ -6,6 +6,7 @@ import { Button } from '../components/ui/button';
 import { generateFeedback } from '../utils/colorUtils';
 import { toast } from 'sonner';
 import { Share2 } from 'lucide-react';
+import { ScrollArea } from '../components/ui/scroll-area';
 
 interface RoundResult {
   targetColor: string;
@@ -27,6 +28,8 @@ const Results = () => {
     const storedName = localStorage.getItem('playerName');
     const storedResults = localStorage.getItem('gameResults');
     
+    console.log("Stored results:", storedResults);
+    
     if (!storedName || !storedResults) {
       navigate('/');
       return;
@@ -34,6 +37,8 @@ const Results = () => {
     
     setPlayerName(storedName);
     const parsedResults = JSON.parse(storedResults) as RoundResult[];
+    
+    console.log("Parsed results:", parsedResults);
     setResults(parsedResults);
     
     // Calculate total score
@@ -75,7 +80,7 @@ const Results = () => {
             <p className="text-xl font-mono">{feedback}</p>
           </div>
           
-          <div className="mb-8">
+          <ScrollArea className="mb-8 max-h-full">
             <div className="grid grid-cols-1 gap-6">
               {results.map((round, index) => (
                 <div key={index} className="border border-white p-4">
@@ -103,7 +108,7 @@ const Results = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </ScrollArea>
           
           <div className="flex flex-col md:flex-row gap-4 mb-8">
             <Button 

@@ -74,14 +74,16 @@ const Game = () => {
       const roundIndex = currentRound - 1;
       const roundColor = allTargetColors[roundIndex];
       setTargetColor(roundColor);
-      // Don't reset to white, keep the selected color from previous round
+      
+      // Initialize with white color only for the first round
       if (currentRound === 1) {
         setSelectedColor('#FFFFFF');
       }
+      
       setTimeRemaining(SECONDS_PER_ROUND);
       setIsRoundActive(true);
     } else {
-      // Game over, navigate to results
+      // Make sure results are saved completely before navigating
       localStorage.setItem('gameResults', JSON.stringify(results));
       navigate('/results');
     }
@@ -109,9 +111,11 @@ const Game = () => {
   const endRound = useCallback(() => {
     setIsRoundActive(false);
     
+    // Calculate values for the current round
     const difference = calculateColorDifference(targetColor, selectedColor);
     const roundScore = calculateScore(difference);
     
+    // Create the round result object
     const roundResult = {
       targetColor,
       selectedColor,
@@ -120,14 +124,19 @@ const Game = () => {
       timeRemaining,
     };
     
+    // Add the new result to our results array
     setResults((prev) => [...prev, roundResult]);
     
-    // Automatically proceed to next round after a short delay
+    // Force immediate localStorage update for safety
     setTimeout(() => {
+      const updatedResults = [...results, roundResult];
+      localStorage.setItem('gameResults', JSON.stringify(updatedResults));
+      
+      // Proceed to next round
       setCurrentRound((prev) => prev + 1);
       setShowColorPicker(false);
     }, 500);
-  }, [targetColor, selectedColor, timeRemaining]);
+  }, [targetColor, selectedColor, timeRemaining, results]);
 
   const toggleColorPicker = () => {
     if (isRoundActive) {
@@ -166,7 +175,7 @@ const Game = () => {
               <h3 className="font-display text-lg mb-4">COLOR OBJETIVO</h3>
               <div className="font-mono text-center mb-2 uppercase">{targetColor}</div>
               <div 
-                className="color-swatch h-32 md:h-48"
+                className="color-swatch h-16 md:h-24"
                 style={{ backgroundColor: targetColor }}
               ></div>
             </div>
@@ -175,7 +184,7 @@ const Game = () => {
               <h3 className="font-display text-lg mb-4">TU SELECCIÓN</h3>
               <div className="font-mono text-center mb-2 uppercase">{selectedColor}</div>
               <div 
-                className="color-swatch mb-4 h-32 md:h-48 cursor-pointer"
+                className="color-swatch mb-4 h-16 md:h-24 cursor-pointer"
                 style={{ backgroundColor: selectedColor }}
                 onClick={toggleColorPicker}
               ></div>
