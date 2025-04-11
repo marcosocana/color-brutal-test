@@ -58,6 +58,11 @@ const Results = () => {
       .catch(() => toast.error('No se pudo copiar el resultado'));
   };
 
+  // Calculate similarity percentage from difference
+  const getSimilarityPercentage = (difference: number): number => {
+    return Math.max(0, Math.round(100 - difference));
+  };
+
   return (
     <Layout fullHeight={false}>
       <div className="brutalist-container my-6 w-full">
@@ -76,7 +81,10 @@ const Results = () => {
                 <div key={index} className="border border-white p-4">
                   <div className="flex justify-between items-center mb-4">
                     <p className="font-display">RONDA {index + 1}</p>
-                    <p className="font-display">{round.score} PUNTOS</p>
+                    <div className="flex items-center gap-3">
+                      <p className="font-mono text-sm">{getSimilarityPercentage(round.difference)}% similitud</p>
+                      <p className="font-display">{round.score} PUNTOS</p>
+                    </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -27,6 +28,7 @@ const Game = () => {
   const [results, setResults] = useState<RoundResult[]>([]);
   const [countdown, setCountdown] = useState<number>(3);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
 
   // Get player name from localStorage
   useEffect(() => {
@@ -123,8 +125,15 @@ const Game = () => {
     // Automatically proceed to next round after a short delay
     setTimeout(() => {
       setCurrentRound((prev) => prev + 1);
+      setShowColorPicker(false);
     }, 500);
   }, [targetColor, selectedColor, timeRemaining]);
+
+  const toggleColorPicker = () => {
+    if (isRoundActive) {
+      setShowColorPicker(!showColorPicker);
+    }
+  };
 
   if (!gameStarted) {
     return (
@@ -155,30 +164,28 @@ const Game = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-grow">
             <div className="flex flex-col">
               <h3 className="font-display text-lg mb-4">COLOR OBJETIVO</h3>
+              <div className="font-mono text-center mb-2 uppercase">{targetColor}</div>
               <div 
                 className="color-swatch h-32 md:h-48"
                 style={{ backgroundColor: targetColor }}
               ></div>
-              <div className="mt-4 font-mono text-center uppercase">{targetColor}</div>
             </div>
             
             <div className="flex flex-col">
               <h3 className="font-display text-lg mb-4">TU SELECCIÓN</h3>
+              <div className="font-mono text-center mb-2 uppercase">{selectedColor}</div>
               <div 
-                className="color-swatch mb-4 h-32 md:h-48"
+                className="color-swatch mb-4 h-32 md:h-48 cursor-pointer"
                 style={{ backgroundColor: selectedColor }}
+                onClick={toggleColorPicker}
               ></div>
               
-              {isRoundActive && (
-                <>
-                  <HexColorPicker 
-                    color={selectedColor} 
-                    onChange={setSelectedColor}
-                    className="w-full mb-6"
-                  />
-                  
-                  <div className="font-mono text-center mb-4">{selectedColor}</div>
-                </>
+              {isRoundActive && showColorPicker && (
+                <HexColorPicker 
+                  color={selectedColor} 
+                  onChange={setSelectedColor}
+                  className="w-full mb-6"
+                />
               )}
               
               {!isRoundActive && (
