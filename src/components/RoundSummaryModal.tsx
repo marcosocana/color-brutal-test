@@ -58,7 +58,7 @@ const RoundSummaryModal = ({
         <div className="flex flex-col items-center gap-4 mb-4">
           <div className="text-center">
             <div className="text-2xl font-display">{score} PUNTOS</div>
-            <div className="text-sm mt-1">Similitud: {similarity}%</div>
+            <div className="text-sm mt-1">Similitud: {similarity.toFixed(1)}%</div>
           </div>
         </div>
         

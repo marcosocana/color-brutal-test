@@ -4,81 +4,88 @@
 @tailwind utilities;
 
 @layer base {
-  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@300;400;500&display=swap');
-
   :root {
-    --background: 0 0% 12%; /* Darker gray background */
-    --foreground: 0 0% 100%;
-
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 100%;
-
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 4%;
-
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
-
-    --accent: 0 0% 20%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 100% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 0% 100%;
-
-    --radius: 0;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
   }
-  
+ 
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
   * {
     @apply border-border;
-    cursor: default;
   }
-
-  html, body {
-    @apply bg-background text-foreground m-0 p-0 min-h-screen;
-    font-family: 'DM Mono', monospace;
+  body {
+    @apply bg-background text-foreground;
     overflow-x: hidden;
-  }
-
-  h1, h2, h3, h4 {
-    font-family: 'Archivo Black', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: -0.05em;
   }
 }
 
 @layer components {
+  .brutalist-grid {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-color: #333333;
+  }
+
   .brutalist-container {
-    @apply border border-white max-w-6xl mx-auto p-6 md:p-12;
+    @apply px-4 sm:px-6 md:px-8;
   }
-  
+
   .brutalist-title {
-    @apply font-display text-4xl md:text-6xl uppercase tracking-tighter;
+    @apply font-display text-4xl sm:text-5xl md:text-6xl tracking-tighter uppercase;
   }
-  
+
   .brutalist-button {
-    @apply border border-white bg-background hover:bg-white hover:text-background transition-colors px-6 py-3 text-lg uppercase tracking-wider font-display;
+    @apply uppercase font-display tracking-wider py-3 px-6 bg-white text-black hover:bg-gray-200 transition-colors border border-black;
   }
-  
+
   .nav-link {
-    @apply relative inline-block text-lg uppercase after:content-[''] after:absolute after:w-full after:h-0.5 after:bottom-0 after:left-0 after:bg-white after:origin-bottom-right after:transition-transform after:duration-300 after:scale-x-0 hover:after:scale-x-100 hover:after:origin-bottom-left;
+    @apply hover:underline uppercase tracking-wider;
   }
 
   .color-swatch {
-    @apply w-full h-full border border-white relative overflow-hidden;
-  }
-  
-  .noise-filter {
-    @apply absolute inset-0 opacity-10 pointer-events-none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    @apply border border-white/30 rounded aspect-square w-full;
   }
 }

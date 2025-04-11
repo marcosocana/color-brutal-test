@@ -21,6 +21,7 @@ const Game = () => {
   const navigate = useNavigate();
   const [playerName, setPlayerName] = useState<string>('');
   const [currentRound, setCurrentRound] = useState<number>(1);
+  const [allTargetColors, setAllTargetColors] = useState<string[]>([]);
   const [targetColor, setTargetColor] = useState<string>('#000000');
   const [selectedColor, setSelectedColor] = useState<string>('#FFFFFF');
   const [timeRemaining, setTimeRemaining] = useState<number>(SECONDS_PER_ROUND);
@@ -41,6 +42,15 @@ const Game = () => {
     setPlayerName(storedName);
   }, [navigate]);
 
+  // Generate all target colors at the start
+  useEffect(() => {
+    const colors = [];
+    for (let i = 0; i < TOTAL_ROUNDS; i++) {
+      colors.push(getRandomColor());
+    }
+    setAllTargetColors(colors);
+  }, []);
+
   // Initial countdown before starting the game
   useEffect(() => {
     if (countdown > 0) {
@@ -57,13 +67,15 @@ const Game = () => {
     }
   }, [countdown]);
 
-  // Generate a new target color at the start of each round
+  // Set the current round's target color
   useEffect(() => {
-    if (!gameStarted) return;
+    if (!gameStarted || allTargetColors.length === 0) return;
     
     if (currentRound <= TOTAL_ROUNDS) {
-      const newColor = getRandomColor();
-      setTargetColor(newColor);
+      // Use the pre-generated color for this round
+      const roundIndex = currentRound - 1;
+      const roundColor = allTargetColors[roundIndex];
+      setTargetColor(roundColor);
       setSelectedColor('#FFFFFF'); // Reset to white
       setTimeRemaining(SECONDS_PER_ROUND);
       setIsRoundActive(true);
@@ -72,7 +84,7 @@ const Game = () => {
       localStorage.setItem('gameResults', JSON.stringify(results));
       navigate('/results');
     }
-  }, [currentRound, gameStarted, navigate, results]);
+  }, [currentRound, gameStarted, navigate, results, allTargetColors]);
 
   // Timer countdown
   useEffect(() => {
