@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -65,28 +64,26 @@ const Game = () => {
     }
   }, [countdown]);
 
+  // Set a random initial selected color ONLY for the first round
+  useEffect(() => {
+    if (gameStarted && currentRound === 1 && results.length === 0) {
+      setSelectedColor(getRandomColor());
+    }
+  }, [gameStarted, currentRound, results.length]);
+
   // Set the current round's target color
   useEffect(() => {
     if (!gameStarted || allTargetColors.length === 0) return;
-    
+
     if (currentRound <= TOTAL_ROUNDS) {
-      // Use the pre-generated color for this round
       const roundIndex = currentRound - 1;
       const roundColor = allTargetColors[roundIndex];
       setTargetColor(roundColor);
-      
-      // Comenzar cada ronda con un color aleatorio en lugar de blanco
-      if (!results.length) {
-        // Si es la primera ronda, establecer un color aleatorio inicial
-        setSelectedColor(getRandomColor());
-      }
-      
-      // Reset time and activate round
+
       setTimeRemaining(SECONDS_PER_ROUND);
       setIsRoundActive(true);
-      setShowColorPicker(true); // Mostrar el selector de color automáticamente
+      setShowColorPicker(true);
     } else {
-      // Ensure all results are saved before navigating
       localStorage.setItem('gameResults', JSON.stringify(results));
       navigate('/results');
     }
@@ -110,15 +107,12 @@ const Game = () => {
     return () => clearInterval(timer);
   }, [isRoundActive, gameStarted]);
 
-  // End current round
   const endRound = useCallback(() => {
     setIsRoundActive(false);
-    
-    // Calculate values for the current round
+
     const difference = calculateColorDifference(targetColor, selectedColor);
     const roundScore = calculateScore(difference);
-    
-    // Create the round result object
+
     const roundResult = {
       targetColor,
       selectedColor,
@@ -126,18 +120,13 @@ const Game = () => {
       score: roundScore,
       timeRemaining,
     };
-    
-    // Update results state with the new round result
+
     setResults(prevResults => {
       const updatedResults = [...prevResults, roundResult];
-      
-      // Inmediatamente guardar en localStorage después de cada ronda
       localStorage.setItem('gameResults', JSON.stringify(updatedResults));
-      
       return updatedResults;
     });
-    
-    // Proceed to next round after a short delay
+
     setTimeout(() => {
       setCurrentRound(prev => prev + 1);
     }, 500);
@@ -174,7 +163,7 @@ const Game = () => {
               {timeRemaining}s
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-grow">
             <div className="flex flex-col">
               <h3 className="font-display text-lg mb-4">COLOR OBJETIVO</h3>
@@ -184,7 +173,7 @@ const Game = () => {
                 style={{ backgroundColor: targetColor }}
               ></div>
             </div>
-            
+
             <div className="flex flex-col">
               <h3 className="font-display text-lg mb-4">TU SELECCIÓN</h3>
               <div className="font-mono text-center mb-2 uppercase">{selectedColor}</div>
@@ -193,7 +182,7 @@ const Game = () => {
                 style={{ backgroundColor: selectedColor }}
                 onClick={toggleColorPicker}
               ></div>
-              
+
               {isRoundActive && showColorPicker && (
                 <HexColorPicker 
                   color={selectedColor} 
@@ -201,7 +190,7 @@ const Game = () => {
                   className="w-full mb-6"
                 />
               )}
-              
+
               {!isRoundActive && (
                 <div className="flex-grow flex items-center justify-center">
                   <p className="text-xl text-center animate-pulse">
