@@ -4,8 +4,8 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 // Dictionary of translations
 const translations = {
   es: {
-    about: 'Acerca de',
-    manifesto: 'Manifiesto',
+    about: 'About',
+    manifesto: 'Manifesto',
     results: 'RESULTADOS',
     round: 'RONDA',
     score: 'PUNTOS',
@@ -18,16 +18,6 @@ const translations = {
     colorTarget: 'COLOR OBJETIVO',
     yourSelection: 'TU SELECCIÓN',
     preparing: 'Preparando siguiente ronda...',
-    // Home screen
-    startGame: 'EMPEZAR JUEGO',
-    enterName: 'Introduce tu nombre',
-    namePlaceholder: 'Tu nombre aquí',
-    // Results page
-    outOf: 'de',
-    addLastRound: 'AÑADIR ÚLTIMA RONDA',
-    // About & Manifesto
-    aboutTitle: 'Acerca de Colorete',
-    manifestoTitle: 'Nuestro Manifiesto',
     // Add more translations as needed
   },
   en: {
@@ -45,16 +35,6 @@ const translations = {
     colorTarget: 'TARGET COLOR',
     yourSelection: 'YOUR SELECTION',
     preparing: 'Preparing next round...',
-    // Home screen
-    startGame: 'START GAME',
-    enterName: 'Enter your name',
-    namePlaceholder: 'Your name here',
-    // Results page
-    outOf: 'out of',
-    addLastRound: 'ADD LAST ROUND',
-    // About & Manifesto
-    aboutTitle: 'About Colorete',
-    manifestoTitle: 'Our Manifesto',
     // Add more translations as needed
   }
 };

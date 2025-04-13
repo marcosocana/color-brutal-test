@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import { Button } from '../components/ui/button';
 import { generateFeedback } from '../utils/colorUtils';
 import { toast } from 'sonner';
-import { Copy, ArrowDown } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import { ScrollArea } from '../components/ui/scroll-area';
 import { useLanguage } from '../hooks/use-language';
 
@@ -17,8 +17,6 @@ interface RoundResult {
   timeRemaining: number;
 }
 
-const EXPECTED_ROUNDS = 6;
-
 const Results = () => {
   const navigate = useNavigate();
   const [playerName, setPlayerName] = useState<string>('');
@@ -26,7 +24,6 @@ const Results = () => {
   const [totalScore, setTotalScore] = useState<number>(0);
   const [feedback, setFeedback] = useState<string>('');
   const { t, language } = useLanguage();
-  const [showAddLastRoundButton, setShowAddLastRoundButton] = useState<boolean>(false);
 
   useEffect(() => {
     // Get player name and results from localStorage
@@ -50,8 +47,8 @@ const Results = () => {
     const firstRound = parsedResults[0];
     const isDefaultFirstRound = 
       firstRound && 
-      ((firstRound.targetColor === '#000000' && firstRound.selectedColor === '#FFFFFF') ||
-       (firstRound.targetColor === firstRound.selectedColor));
+      firstRound.targetColor === '#000000' && 
+      firstRound.selectedColor === '#FFFFFF';
     
     // Filter out the first round if it's the default one
     const filteredResults = isDefaultFirstRound 
@@ -60,16 +57,12 @@ const Results = () => {
     
     setResults(filteredResults);
     
-    // Check if we need to show the "Add Last Round" button
-    // Only show if we have fewer than expected rounds and there are more results available
-    setShowAddLastRoundButton(filteredResults.length < EXPECTED_ROUNDS && parsedResults.length > filteredResults.length);
-    
     // Calculate total score based on filtered results
     const total = filteredResults.reduce((sum, round) => sum + round.score, 0);
     setTotalScore(total);
     
     // Generate feedback
-    const maxPossibleScore = EXPECTED_ROUNDS * 100; // Always 500 points max (5 rounds * 100 points)
+    const maxPossibleScore = filteredResults.length * 100;
     const feedbackText = generateFeedback(total, maxPossibleScore);
     setFeedback(feedbackText);
   }, [navigate]);
@@ -83,9 +76,9 @@ const Results = () => {
   const handleCopyResults = () => {
     let shareText;
     if (language === 'en') {
-      shareText = `🎨 Colorete: ${playerName} got ${totalScore} points out of ${EXPECTED_ROUNDS * 100}. "${feedback}" 🎨 Try to beat it!`;
+      shareText = `🎨 Colorete: ${playerName} got ${totalScore} points out of ${results.length * 100}. "${feedback}" 🎨 Try to beat it!`;
     } else {
-      shareText = `🎨 Colorete: ${playerName} consiguió ${totalScore} puntos de ${EXPECTED_ROUNDS * 100}. "${feedback}" 🎨 ¡Intenta superarlo!`;
+      shareText = `🎨 Colorete: ${playerName} consiguió ${totalScore} puntos de ${results.length * 100}. "${feedback}" 🎨 ¡Intenta superarlo!`;
     }
     
     navigator.clipboard.writeText(shareText)
@@ -98,43 +91,6 @@ const Results = () => {
     return Math.max(0, Math.round(100 - difference));
   };
 
-  // Function to add the last round if it's missing
-  const handleAddLastRound = () => {
-    // Get the original results from localStorage
-    const storedResults = localStorage.getItem('gameResults');
-    if (!storedResults) return;
-    
-    const parsedResults = JSON.parse(storedResults) as RoundResult[];
-    
-    // Skip the first round if it's the default black/white one
-    const firstRound = parsedResults[0];
-    const isDefaultFirstRound = 
-      firstRound && 
-      ((firstRound.targetColor === '#000000' && firstRound.selectedColor === '#FFFFFF') ||
-       (firstRound.targetColor === firstRound.selectedColor));
-    
-    // If we already have all rounds, do nothing
-    if ((!isDefaultFirstRound && parsedResults.length >= EXPECTED_ROUNDS) || 
-        (isDefaultFirstRound && parsedResults.length >= EXPECTED_ROUNDS + 1)) {
-      return;
-    }
-    
-    // Get all valid rounds
-    const validResults = isDefaultFirstRound 
-      ? parsedResults.slice(1) 
-      : parsedResults;
-    
-    // Set all valid rounds
-    setResults(validResults);
-    
-    // Calculate total score
-    const total = validResults.reduce((sum, round) => sum + round.score, 0);
-    setTotalScore(total);
-    
-    // Hide the button
-    setShowAddLastRoundButton(false);
-  };
-
   return (
     <Layout fullHeight={false}>
       <div className="brutalist-container my-6 w-full">
@@ -143,21 +99,9 @@ const Results = () => {
         <div className="max-w-4xl mx-auto">
           <div className="mb-8 text-center">
             <p className="text-2xl mb-2 font-display uppercase">{playerName}</p>
-            <p className="text-4xl md:text-6xl font-display mb-6">{totalScore}/{EXPECTED_ROUNDS * 100}</p>
+            <p className="text-4xl md:text-6xl font-display mb-6">{totalScore}/{results.length * 100}</p>
             <p className="text-xl font-mono">{feedback}</p>
           </div>
-          
-          {showAddLastRoundButton && (
-            <div className="flex justify-center mb-8">
-              <Button 
-                onClick={handleAddLastRound} 
-                className="brutalist-button flex items-center gap-2"
-              >
-                <ArrowDown size={18} />
-                {t('addLastRound')}
-              </Button>
-            </div>
-          )}
           
           <ScrollArea className="mb-8 max-h-full">
             <div className="grid grid-cols-1 gap-6">
