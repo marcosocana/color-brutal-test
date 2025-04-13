@@ -36,17 +36,25 @@ const Results = () => {
     }
     
     setPlayerName(storedName);
+    
+    // Parse results and skip the first round (which is incorrect)
     const parsedResults = JSON.parse(storedResults) as RoundResult[];
-    
     console.log("Parsed results:", parsedResults);
-    setResults(parsedResults);
     
-    // Calculate total score
-    const total = parsedResults.reduce((sum, round) => sum + round.score, 0);
+    // Skip the first round if it has the default #000000/#FFFFFF values
+    const filteredResults = parsedResults.filter((result, index) => {
+      // Skip if it's the first round AND has the default colors
+      return !(index === 0 && result.targetColor === '#000000' && result.selectedColor === '#FFFFFF');
+    });
+    
+    setResults(filteredResults);
+    
+    // Calculate total score based on filtered results
+    const total = filteredResults.reduce((sum, round) => sum + round.score, 0);
     setTotalScore(total);
     
     // Generate feedback
-    const maxPossibleScore = parsedResults.length * 100;
+    const maxPossibleScore = filteredResults.length * 100;
     const feedbackText = generateFeedback(total, maxPossibleScore);
     setFeedback(feedbackText);
   }, [navigate]);

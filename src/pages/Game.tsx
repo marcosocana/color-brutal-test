@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -27,7 +28,7 @@ const Game = () => {
   const [results, setResults] = useState<RoundResult[]>([]);
   const [countdown, setCountdown] = useState<number>(3);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
-  const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
+  const [showColorPicker, setShowColorPicker] = useState<boolean>(true); // Always show color picker by default
 
   // Get player name from localStorage
   useEffect(() => {
@@ -64,12 +65,12 @@ const Game = () => {
     }
   }, [countdown]);
 
-  // Set a random initial selected color ONLY for the first round
+  // Set a random initial selected color when the game starts
   useEffect(() => {
-    if (gameStarted && currentRound === 1 && results.length === 0) {
+    if (gameStarted) {
       setSelectedColor(getRandomColor());
     }
-  }, [gameStarted, currentRound, results.length]);
+  }, [gameStarted]);
 
   // Set the current round's target color
   useEffect(() => {
@@ -84,6 +85,7 @@ const Game = () => {
       setIsRoundActive(true);
       setShowColorPicker(true);
     } else {
+      // Make sure we save the results one last time before navigating
       localStorage.setItem('gameResults', JSON.stringify(results));
       navigate('/results');
     }
@@ -123,6 +125,7 @@ const Game = () => {
 
     setResults(prevResults => {
       const updatedResults = [...prevResults, roundResult];
+      // Save results after each round to ensure we have the latest data
       localStorage.setItem('gameResults', JSON.stringify(updatedResults));
       return updatedResults;
     });
