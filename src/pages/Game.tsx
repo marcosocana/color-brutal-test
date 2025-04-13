@@ -135,7 +135,7 @@ const Game = () => {
     // After a short delay, proceed to the next round
     setTimeout(() => {
       setCurrentRound(prev => prev + 1);
-    }, 500);
+    }, 2000); // Increased delay to ensure results are saved
   }, [targetColor, selectedColor, timeRemaining]);
 
   const toggleColorPicker = () => {
@@ -175,7 +175,7 @@ const Game = () => {
               <h3 className="font-display text-lg mb-4">{t('colorTarget')}</h3>
               <div className="font-mono text-center mb-2 uppercase">{targetColor}</div>
               <div 
-                className="color-swatch h-48 md:h-72"
+                className="color-swatch h-64 md:h-96"
                 style={{ backgroundColor: targetColor }}
               ></div>
             </div>
@@ -184,7 +184,7 @@ const Game = () => {
               <h3 className="font-display text-lg mb-4">{t('yourSelection')}</h3>
               <div className="font-mono text-center mb-2 uppercase">{selectedColor}</div>
               <div 
-                className="color-swatch mb-4 h-48 md:h-72 cursor-pointer"
+                className="color-swatch mb-4 h-64 md:h-96 cursor-pointer"
                 style={{ backgroundColor: selectedColor }}
                 onClick={toggleColorPicker}
               ></div>
