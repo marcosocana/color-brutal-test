@@ -14,6 +14,10 @@ const translations = {
     yourColor: 'TU COLOR',
     copyResults: 'COPIAR RESULTADOS',
     playAgain: 'JUGAR DE NUEVO',
+    // Game screen translations
+    colorTarget: 'COLOR OBJETIVO',
+    yourSelection: 'TU SELECCIÓN',
+    preparing: 'Preparando siguiente ronda...',
     // Add more translations as needed
   },
   en: {
@@ -27,6 +31,10 @@ const translations = {
     yourColor: 'YOUR COLOR',
     copyResults: 'COPY RESULTS',
     playAgain: 'PLAY AGAIN',
+    // Game screen translations
+    colorTarget: 'TARGET COLOR',
+    yourSelection: 'YOUR SELECTION',
+    preparing: 'Preparing next round...',
     // Add more translations as needed
   }
 };

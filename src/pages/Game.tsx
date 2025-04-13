@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { HexColorPicker } from 'react-colorful';
 import { getRandomColor, calculateColorDifference, calculateScore } from '../utils/colorUtils';
+import { useLanguage } from '../hooks/use-language';
 
 interface RoundResult {
   targetColor: string;
@@ -17,6 +19,7 @@ const SECONDS_PER_ROUND = 10;
 
 const Game = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [playerName, setPlayerName] = useState<string>('');
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [allTargetColors, setAllTargetColors] = useState<string[]>([]);
@@ -27,7 +30,7 @@ const Game = () => {
   const [results, setResults] = useState<RoundResult[]>([]);
   const [countdown, setCountdown] = useState<number>(3);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
-  const [showColorPicker, setShowColorPicker] = useState<boolean>(true); // Always show color picker by default
+  const [showColorPicker, setShowColorPicker] = useState<boolean>(true);
 
   // Get player name from localStorage
   useEffect(() => {
@@ -84,7 +87,7 @@ const Game = () => {
       setIsRoundActive(true);
       setShowColorPicker(true);
     } else {
-      // Make sure we save the results one last time before navigating
+      // Make sure we save the results before navigating
       localStorage.setItem('gameResults', JSON.stringify(results));
       navigate('/results');
     }
@@ -124,11 +127,12 @@ const Game = () => {
 
     setResults(prevResults => {
       const updatedResults = [...prevResults, roundResult];
-      // Save results after each round to ensure we have the latest data
+      // Save results after each round
       localStorage.setItem('gameResults', JSON.stringify(updatedResults));
       return updatedResults;
     });
 
+    // After a short delay, proceed to the next round
     setTimeout(() => {
       setCurrentRound(prev => prev + 1);
     }, 500);
@@ -160,7 +164,7 @@ const Game = () => {
       <div className="flex flex-col h-full">
         <div className="brutalist-container my-6 flex-grow flex flex-col max-w-6xl mx-auto w-full">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="font-display text-xl">RONDA {currentRound}/{TOTAL_ROUNDS}</h2>
+            <h2 className="font-display text-xl">{t('round')} {currentRound}/{TOTAL_ROUNDS}</h2>
             <div className="text-xl font-mono px-4 py-2 border border-white rounded flex items-center justify-center min-w-16">
               {timeRemaining}s
             </div>
@@ -168,7 +172,7 @@ const Game = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-grow">
             <div className="flex flex-col">
-              <h3 className="font-display text-lg mb-4">COLOR OBJETIVO</h3>
+              <h3 className="font-display text-lg mb-4">{t('colorTarget')}</h3>
               <div className="font-mono text-center mb-2 uppercase">{targetColor}</div>
               <div 
                 className="color-swatch h-48 md:h-72"
@@ -177,7 +181,7 @@ const Game = () => {
             </div>
 
             <div className="flex flex-col">
-              <h3 className="font-display text-lg mb-4">TU SELECCIÓN</h3>
+              <h3 className="font-display text-lg mb-4">{t('yourSelection')}</h3>
               <div className="font-mono text-center mb-2 uppercase">{selectedColor}</div>
               <div 
                 className="color-swatch mb-4 h-48 md:h-72 cursor-pointer"
@@ -196,7 +200,7 @@ const Game = () => {
               {!isRoundActive && (
                 <div className="flex-grow flex items-center justify-center">
                   <p className="text-xl text-center animate-pulse">
-                    Preparando siguiente ronda...
+                    {t('preparing')}
                   </p>
                 </div>
               )}
