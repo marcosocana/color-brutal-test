@@ -17,7 +17,7 @@ interface RoundResult {
   timeRemaining: number;
 }
 
-const EXPECTED_ROUNDS = 5;
+const EXPECTED_ROUNDS = 6;
 
 const Results = () => {
   const navigate = useNavigate();
