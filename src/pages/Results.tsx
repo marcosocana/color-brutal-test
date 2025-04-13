@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import { Button } from '../components/ui/button';
 import { generateFeedback } from '../utils/colorUtils';
 import { toast } from 'sonner';
-import { Share2 } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import { ScrollArea } from '../components/ui/scroll-area';
 
 interface RoundResult {
@@ -37,24 +37,18 @@ const Results = () => {
     
     setPlayerName(storedName);
     
-    // Parse results and skip the first round (which is incorrect)
+    // Parse all results without filtering
     const parsedResults = JSON.parse(storedResults) as RoundResult[];
     console.log("Parsed results:", parsedResults);
     
-    // Skip the first round if it has the default #000000/#FFFFFF values
-    const filteredResults = parsedResults.filter((result, index) => {
-      // Skip if it's the first round AND has the default colors
-      return !(index === 0 && result.targetColor === '#000000' && result.selectedColor === '#FFFFFF');
-    });
+    setResults(parsedResults);
     
-    setResults(filteredResults);
-    
-    // Calculate total score based on filtered results
-    const total = filteredResults.reduce((sum, round) => sum + round.score, 0);
+    // Calculate total score based on all results
+    const total = parsedResults.reduce((sum, round) => sum + round.score, 0);
     setTotalScore(total);
     
     // Generate feedback
-    const maxPossibleScore = filteredResults.length * 100;
+    const maxPossibleScore = parsedResults.length * 100;
     const feedbackText = generateFeedback(total, maxPossibleScore);
     setFeedback(feedbackText);
   }, [navigate]);
@@ -65,7 +59,7 @@ const Results = () => {
     navigate('/');
   };
 
-  const handleShare = () => {
+  const handleCopyResults = () => {
     const shareText = `🎨 Colorete: ${playerName} consiguió ${totalScore} puntos de ${results.length * 100}. "${feedback}" 🎨 ¡Intenta superarlo!`;
     
     navigator.clipboard.writeText(shareText)
@@ -105,13 +99,13 @@ const Results = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm mb-2">OBJETIVO</p>
-                      <div className="h-12 w-full border border-white/30" style={{ backgroundColor: round.targetColor }}></div>
+                      <div className="h-36 w-full border border-white/30" style={{ backgroundColor: round.targetColor }}></div>
                       <p className="text-xs mt-1 font-mono">{round.targetColor}</p>
                     </div>
                     
                     <div>
                       <p className="text-sm mb-2">TU COLOR</p>
-                      <div className="h-12 w-full border border-white/30" style={{ backgroundColor: round.selectedColor }}></div>
+                      <div className="h-36 w-full border border-white/30" style={{ backgroundColor: round.selectedColor }}></div>
                       <p className="text-xs mt-1 font-mono">{round.selectedColor}</p>
                     </div>
                   </div>
@@ -122,11 +116,12 @@ const Results = () => {
           
           <div className="flex flex-col md:flex-row gap-4 mb-8">
             <Button 
-              onClick={handleShare} 
+              onClick={handleCopyResults} 
+              variant="secondary"
               className="brutalist-button flex items-center justify-center gap-2 flex-grow"
             >
-              <Share2 size={18} />
-              COMPARTIR
+              <Copy size={18} />
+              COPIAR RESULTADOS
             </Button>
             
             <Button 

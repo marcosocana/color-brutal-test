@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -172,7 +171,7 @@ const Game = () => {
               <h3 className="font-display text-lg mb-4">COLOR OBJETIVO</h3>
               <div className="font-mono text-center mb-2 uppercase">{targetColor}</div>
               <div 
-                className="color-swatch h-16 md:h-24"
+                className="color-swatch h-48 md:h-72"
                 style={{ backgroundColor: targetColor }}
               ></div>
             </div>
@@ -181,7 +180,7 @@ const Game = () => {
               <h3 className="font-display text-lg mb-4">TU SELECCIÓN</h3>
               <div className="font-mono text-center mb-2 uppercase">{selectedColor}</div>
               <div 
-                className="color-swatch mb-4 h-16 md:h-24 cursor-pointer"
+                className="color-swatch mb-4 h-48 md:h-72 cursor-pointer"
                 style={{ backgroundColor: selectedColor }}
                 onClick={toggleColorPicker}
               ></div>
