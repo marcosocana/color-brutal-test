@@ -43,18 +43,11 @@ const Results = () => {
     const parsedResults = JSON.parse(storedResults) as RoundResult[];
     console.log("Parsed results:", parsedResults);
     
-    // Skip the first round if it's the default black/white one
-    const firstRound = parsedResults[0];
-    const isDefaultFirstRound = 
-      firstRound && 
-      firstRound.targetColor === '#000000' && 
-      firstRound.selectedColor === '#FFFFFF';
+    // Always skip the first round (black/white default round)
+    const filteredResults = parsedResults.slice(1);
+    console.log("Filtered results:", filteredResults);
     
-    // Filter out the first round if it's the default one
-    const filteredResults = isDefaultFirstRound 
-      ? parsedResults.slice(1) 
-      : parsedResults;
-    
+    // Ensure we have all the game rounds
     setResults(filteredResults);
     
     // Calculate total score based on filtered results
@@ -62,6 +55,7 @@ const Results = () => {
     setTotalScore(total);
     
     // Generate feedback
+    // Calculate max possible score based on number of rounds (excluding first)
     const maxPossibleScore = filteredResults.length * 100;
     const feedbackText = generateFeedback(total, maxPossibleScore);
     setFeedback(feedbackText);
@@ -108,7 +102,7 @@ const Results = () => {
               {results.map((round, index) => (
                 <div key={index} className="border border-white p-4">
                   <div className="flex justify-between items-center mb-4">
-                    <p className="font-display">{t('round')} {index + 1}</p>
+                    <p className="font-display">{t('round')} {index + 2}</p>
                     <div className="flex items-center gap-3">
                       <p className="font-mono text-sm">{getSimilarityPercentage(round.difference)}% {t('similarity')}</p>
                       <p className="font-display">{round.score} {t('score')}</p>

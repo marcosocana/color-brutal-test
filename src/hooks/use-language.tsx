@@ -4,8 +4,8 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 // Dictionary of translations
 const translations = {
   es: {
-    about: 'About',
-    manifesto: 'Manifesto',
+    about: 'Sobre Nosotros',
+    manifesto: 'Manifiesto',
     results: 'RESULTADOS',
     round: 'RONDA',
     score: 'PUNTOS',
@@ -21,7 +21,7 @@ const translations = {
     // Add more translations as needed
   },
   en: {
-    about: 'About',
+    about: 'About Us',
     manifesto: 'Manifesto',
     results: 'RESULTS',
     round: 'ROUND',
