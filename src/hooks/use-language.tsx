@@ -18,6 +18,14 @@ const translations = {
     colorTarget: 'COLOR OBJETIVO',
     yourSelection: 'TU SELECCIÓN',
     preparing: 'Preparando siguiente ronda...',
+    // Feedback translations
+    impressive: '¡IMPRESIONANTE! ¿Trabajas para Pantone o qué?',
+    excellent: 'EXCELENTE OJO CROMÁTICO. Podrías ser diseñador.',
+    goodJob: 'BUEN TRABAJO. Tu percepción del color es superior a la media.',
+    notBad: 'NO ESTÁ MAL. Hay potencial en tu ojo para el color.',
+    needsImprovement: 'MEJORABLE. ¿Quizás necesitas calibrar tu monitor?',
+    concerning: 'PREOCUPANTE. ¿Has considerado hacerte una prueba de daltonismo?',
+    colorblind: '¿ERES DISEÑADOR O DALTÓNICO? No lo tengo claro.',
     // Add more translations as needed
   },
   en: {
@@ -35,6 +43,14 @@ const translations = {
     colorTarget: 'TARGET COLOR',
     yourSelection: 'YOUR SELECTION',
     preparing: 'Preparing next round...',
+    // Feedback translations
+    impressive: 'IMPRESSIVE! Do you work for Pantone or what?',
+    excellent: 'EXCELLENT COLOR VISION. You could be a designer.',
+    goodJob: 'GOOD JOB. Your color perception is above average.',
+    notBad: 'NOT BAD. There\'s potential in your eye for color.',
+    needsImprovement: 'NEEDS IMPROVEMENT. Perhaps you need to calibrate your monitor?',
+    concerning: 'CONCERNING. Have you considered taking a colorblindness test?',
+    colorblind: 'ARE YOU A DESIGNER OR COLORBLIND? I\'m not sure.',
     // Add more translations as needed
   }
 };

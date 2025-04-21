@@ -85,6 +85,31 @@ const Results = () => {
     return Math.max(0, Math.round(100 - difference));
   };
 
+  // Function to update translations for feedback
+  const getTranslatedFeedback = (feedback: string): string => {
+    if (language === 'en' && feedback.includes('¡IMPRESIONANTE!')) {
+      return "IMPRESSIVE! Do you work for Pantone or what?";
+    } else if (language === 'en' && feedback.includes('EXCELENTE OJO CROMÁTICO')) {
+      return "EXCELLENT COLOR VISION. You could be a designer.";
+    } else if (language === 'en' && feedback.includes('BUEN TRABAJO')) {
+      return "GOOD JOB. Your color perception is above average.";
+    } else if (language === 'en' && feedback.includes('NO ESTÁ MAL')) {
+      return "NOT BAD. There's potential in your eye for color.";
+    } else if (language === 'en' && feedback.includes('MEJORABLE')) {
+      return "NEEDS IMPROVEMENT. Perhaps you need to calibrate your monitor?";
+    } else if (language === 'en' && feedback.includes('PREOCUPANTE')) {
+      return "CONCERNING. Have you considered taking a colorblindness test?";
+    } else if (language === 'en' && feedback.includes('DISEÑADOR O DALTÓNICO')) {
+      return "ARE YOU A DESIGNER OR COLORBLIND? I'm not sure.";
+    }
+    return feedback;
+  };
+
+  // Ensure we display the correct Round numbers (2-6 instead of 0-4)
+  const getRoundNumber = (index: number): number => {
+    return index + 2; // +2 because we skip round 1 and index is 0-based
+  };
+
   return (
     <Layout fullHeight={false}>
       <div className="brutalist-container my-6 w-full">
@@ -94,7 +119,7 @@ const Results = () => {
           <div className="mb-8 text-center">
             <p className="text-2xl mb-2 font-display uppercase">{playerName}</p>
             <p className="text-4xl md:text-6xl font-display mb-6">{totalScore}/{results.length * 100}</p>
-            <p className="text-xl font-mono">{feedback}</p>
+            <p className="text-xl font-mono">{getTranslatedFeedback(feedback)}</p>
           </div>
           
           <ScrollArea className="mb-8 max-h-full">
@@ -102,7 +127,7 @@ const Results = () => {
               {results.map((round, index) => (
                 <div key={index} className="border border-white p-4">
                   <div className="flex justify-between items-center mb-4">
-                    <p className="font-display">{t('round')} {index + 2}</p>
+                    <p className="font-display">{t('round')} {getRoundNumber(index)}</p>
                     <div className="flex items-center gap-3">
                       <p className="font-mono text-sm">{getSimilarityPercentage(round.difference)}% {t('similarity')}</p>
                       <p className="font-display">{round.score} {t('score')}</p>
@@ -112,13 +137,13 @@ const Results = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm mb-2">{t('target')}</p>
-                      <div className="h-36 w-full border border-white/30" style={{ backgroundColor: round.targetColor }}></div>
+                      <div className="h-40 w-full border border-white/30" style={{ backgroundColor: round.targetColor }}></div>
                       <p className="text-xs mt-1 font-mono">{round.targetColor}</p>
                     </div>
                     
                     <div>
                       <p className="text-sm mb-2">{t('yourColor')}</p>
-                      <div className="h-36 w-full border border-white/30" style={{ backgroundColor: round.selectedColor }}></div>
+                      <div className="h-40 w-full border border-white/30" style={{ backgroundColor: round.selectedColor }}></div>
                       <p className="text-xs mt-1 font-mono">{round.selectedColor}</p>
                     </div>
                   </div>
